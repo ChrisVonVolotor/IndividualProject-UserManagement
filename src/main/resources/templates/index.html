@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>User Management</title>
+    <link th:if="${mode == 'development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
+    <link th:if="${mode == 'production'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.min.css}" />
+
+</head>
+<body>
+<div>
+    <p th:text="'Sign in as ' + ${username} "> </p>
+    <p>and Hello, ThymeLeaf</p>
+
+
+</div>
+<footer th:text="'Page was rendered at ' + ${#dates.format(datetime, 'dd MM yyyy HH:mm')}">
+
+</footer>
+</body>
+</html>

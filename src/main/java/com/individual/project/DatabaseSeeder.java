@@ -2,6 +2,7 @@ package com.individual.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+      /*
         List<UserCreation> users = new ArrayList<>();
 
         users.add(new UserCreation("Bob", "Ross"));
@@ -26,7 +28,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         users.add(new UserCreation("Mike", "Vienna"));
         users.add(new UserCreation("Wayne", "Kerr"));
         userRepository.saveAll(users);
-
+*/
     }
 
     /*@Override

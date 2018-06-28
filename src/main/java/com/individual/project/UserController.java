@@ -23,19 +23,19 @@ public class UserController {
 
     @RequestMapping(value = "/search/{partial}", method = RequestMethod.GET)
     public List<UserCreation> getByFullName(@PathVariable String partial){
-      return userRepository.findByFirstNameAndLastName(partial,partial);
+      return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(partial, partial);
 
 
     }
 
     @RequestMapping(value = "/search/firstname/{partial}", method = RequestMethod.GET)
     public List<UserCreation> getByFirstName(@PathVariable String partial){
-        return userRepository.findByFirstName(partial);
+        return userRepository.findByFirstNameContainingIgnoreCase(partial);
     }
 
     @RequestMapping(value = "/search/lastname/{partial}", method = RequestMethod.GET)
     public List<UserCreation> getByLastName(@PathVariable String partial){
-        return userRepository.findByLastName(partial);
+        return userRepository.findByLastNameContainingIgnoreCase(partial);
 
     }
 
