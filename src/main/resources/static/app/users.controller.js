@@ -11,9 +11,20 @@
         var vm = this;
 
         vm.users = [];
+        vm.sortType='accountNumber';
+        vm.sortReverse=false;
+        vm.searchName='';
+        vm.form={};
+        vm.newUserRequest=false;
+        vm.editUser={};
+        vm.editUserRequest=false;
+      //  vm.form.firstName='';
+       // vm.form.lastName='';
         vm.getAll = getAll;
         vm.getByName = getByName;
         vm.deleteUser = deleteUser;
+        vm.addUser = addUser;
+        vm.updateUser = updateUser;
 
         init();
 
@@ -50,14 +61,42 @@
             })
         }
 
-        function addUser(){
-            var url = "/users/create/" + id;
-            $http.post(url).then(function (response) {
-                vm.users = response.data;
+        function addUser(formData){
+            var url = "/users/create/";
+            $http({
+                method: 'POST',
+                url: url,
+                data: JSON.stringify(formData)
             })
+                .then(function (success) {
+                    console.log(success);
+                    vm.users = success.data;
+                    //callback(success);
+                }, function (error) {
+                    console.log(error.data);
+                });
+
+        }
+
+        function updateUser(id, formData){
+            var url = "/users/update/" + id;
+            console.log(formData);
+            $http({
+                method: 'PUT',
+                url: url,
+                data: JSON.stringify(formData)
+            })
+                .then(function (success) {
+                    console.log(success);
+                    vm.users = success.data;
+                    //callback(success);
+                }, function (error) {
+                    console.log(error.data);
+                });
+
         }
     }
-    
+
 
 }
 

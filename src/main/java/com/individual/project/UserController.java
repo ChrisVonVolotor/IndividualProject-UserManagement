@@ -51,6 +51,16 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @RequestMapping(value = "/update/{exact}", method = RequestMethod.PUT)
+    public List<UserCreation> update(@RequestBody UserCreation userCreation, @PathVariable long exact){
+        UserCreation userCreation1 = userRepository.findByAccountNumberEquals(exact);
+        userCreation1.setFirstName(userCreation.getFirstName());
+        userCreation1.setLastName(userCreation.getLastName());
+        userRepository.save(userCreation);
+
+        return userRepository.findAll();
+    }
+
     @RequestMapping(value = "/delete/{accountNumber}", method = RequestMethod.POST)
     public List<UserCreation> remove(@PathVariable long accountNumber){
         userRepository.deleteById(accountNumber);

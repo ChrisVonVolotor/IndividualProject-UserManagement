@@ -5,39 +5,77 @@
     <title>User Management</title>
     <link th:if="${mode=='development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
     <link th:if="${mode=='production'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+
     <script type="text/javascript" src="/static/angular.min.js" th:src="@{/angular.min.js}"></script>
     <script type="text/javascript" src="/static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
     <script type="text/javascript" src="/static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
 
 
 </head>
-<body data-ng-app="app" ng-controller="UsersController as vm" >
+<body data-ng-app="app" ng-controller="UsersController as vm">
+<div class="alert alert-info">
+
+    Sort Type: {{ vm.sortType }} <br>
+
+    Sort Reverse: {{ vm.sortReverse }} <br>
+
+    Search Query: {{ vm.searchName }} <br>
+
+    Name: {{vm.form}} <br>
+
+    Edit: {{vm.editUser}}
+</div>
+
 <div>
     <p th:text="'Sign in as ' + ${username} "> </p>
     <div class="btn-group" role="group">
         <button class="btn btn-default" data-ng-click="vm.getAll()">Show All</button>
-            <input type="radio" id="sType1" name="searchType" value="FullName"> Full Name
-            <input type="radio" id="sType2" name="searchType" value="FirstName"> First Name
-            <input type="radio" id="sType3" name="searchType" value="LastName"> Last name
-        <input type="text" th:tyid="sType1"pe="text" id="searchValue" name="searchValue">
-        <button class="btn btn-default" data-ng-click="vm.getByName(sType1,sType2,sType3,searchValue)">Search</button>
-
+        <input type="text" class="form-control" placeholder="Search Users" ng-model="vm.searchName">
+        <button class="btn btn-default" data-ng-click="vm.newUserRequest = !vm.newUserRequest">Add User</button>
     </div>
+
+
+
     <div class="row">
         <div class="col-lg-offset-2 col-lg-8">
-            <table class="table">
-                <thead>
+            <table class="table table-striped">
+                <caption>List of Users</caption>
+                <thead class="thead-light">
                     <tr>
-                        <th>Acc No.</th>
-                        <th>First Name</th>
-                        <th>Second Name</th>
+                        <th>
+                            <a href="#" ng-click="vm.sortType = 'accountNumber'; vm.sortReverse = !vm.sortReverse">
+                                Acc No.
+                                <span ng-show="vm.sortType == 'accountNumber' && !vm.sortReverse " class="fa fa-caret-down"></span>
+                                <span ng-show="vm.sortType == 'accountNumber' && vm.sortReverse" class="fa fa-caret-up"></span>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="vm.sortType = 'firstName'; vm.sortReverse = !vm.sortReverse">
+                                First Name
+                                <span ng-show="vm.sortType == 'firstName' && !vm.sortReverse " class="fa fa-caret-down"></span>
+                                <span ng-show="vm.sortType == 'firstName' && vm.sortReverse" class="fa fa-caret-up"></span>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="#" ng-click="vm.sortType = 'lastName'; vm.sortReverse = !vm.sortReverse">
+                                Last Name
+                                <span ng-show="vm.sortType == 'lastName' && !vm.sortReverse " class="fa fa-caret-down"></span>
+                                <span ng-show="vm.sortType == 'lastName' && vm.sortReverse" class="fa fa-caret-up"></span>
+                            </a>
+                        </th>
+                        <th>
+                            <i class="fa fa-cog fa-spin"  style="font-size:24px"></i>
+                        </th>
                     </tr>
                 </thead>
-                <tr ng-repeat="x in vm.users">
+                <tr ng-repeat="x in vm.users | orderBy:vm.sortType:vm.sortReverse |filter:vm.searchName">
                     <td>{{x.accountNumber}}</td>
                     <td>{{x.firstName}}</td>
                     <td>{{x.lastName}}</td>
                     <td>
+                        <button class="btn btn-danger" data-ng-click="vm.editUser.accountNumber = (x.accountNumber); vm.editUser.firstName=x.firstName ;vm.editUser.lastName=x.lastName; vm.editUserRequest = true; ">Edit</button>
                         <button class="btn btn-danger" data-ng-click="vm.deleteUser(x.accountNumber)">Delete</button>
                     </td>
                 </tr>
@@ -45,7 +83,27 @@
             </table>
         </div>
     </div>
+    <div id="newUserBox" class="Popup" ng-show="vm.newUserRequest">
+        <h2>Add User</h2>
+        <form id="newUser" ng-model="vm.form" class="form-group">
+            <label for="firstName"> First Name</label>
+            <input type="text" ng-model="vm.form.firstName" class="form-control" id="firstName" name="firstName">
+            <label for="lastName"> Last Name</label>
+            <input type="text" ng-model="vm.form.lastName" class="form-control" id="lastName" name="lastName">
+            <submit class="btn btn-primary" ng-click="vm.addUser(vm.form); vm.form.firstName = null; vm.form.lastName = null; vm.newUserRequest = false">Add user</submit>
+        </form>
+    </div>
 
+    <div id="editUserBox" class="Popup" ng-show="vm.editUserRequest">
+        <h2>Update User</h2>
+        <form id="editUser" ng-model="vm.editUser" class="form-group">
+            <label for="firstName"> First Name</label>
+            <input type="text" ng-model="vm.editUser.firstName" class="form-control" id="edFirstName" name="firstName">
+            <label for="lastName"> Last Name</label>
+            <input type="text" ng-model="vm.editUser.lastName" class="form-control" id="edLastName" name="lastName">
+            <submit class="btn btn-primary" ng-click="vm.updateUser(vm.editUser.accountNumber, vm.form); vm.editUserRequest = false">Update User</submit>
+        </form>
+    </div>
 
 </div>
 <footer th:text="'Page was rendered at ' + ${#dates.format(datetime, 'dd MM yyyy HH:mm')}">

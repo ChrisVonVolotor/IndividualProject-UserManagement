@@ -35,4 +35,12 @@ public class UserCreation {
     public String getUserFullName() {
         return firstName + " " + lastName;
     }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }

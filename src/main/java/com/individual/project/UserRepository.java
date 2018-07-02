@@ -11,5 +11,6 @@ public interface UserRepository extends JpaRepository<UserCreation, Long> {
     List<UserCreation> findByFirstNameContainingIgnoreCase(String partial);
     List<UserCreation> findByLastNameContainingIgnoreCase(String partial);
     List<UserCreation> findByAccountNumber(Long exact);
+    UserCreation findByAccountNumberEquals(Long exact);
 
 }
