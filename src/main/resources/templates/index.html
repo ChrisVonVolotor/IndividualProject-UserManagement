@@ -3,14 +3,48 @@
 <head>
     <meta charset="UTF-8" />
     <title>User Management</title>
-    <link th:if="${mode == 'development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
-    <link th:if="${mode == 'production'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.min.css}" />
+    <link th:if="${mode=='development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}" />
+    <link th:if="${mode=='production'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.min.css}" />
+    <script type="text/javascript" src="/static/angular.min.js" th:src="@{/angular.min.js}"></script>
+    <script type="text/javascript" src="/static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+    <script type="text/javascript" src="/static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
+
 
 </head>
-<body>
+<body data-ng-app="app" ng-controller="UsersController as vm" >
 <div>
     <p th:text="'Sign in as ' + ${username} "> </p>
-    <p>and Hello, ThymeLeaf</p>
+    <div class="btn-group" role="group">
+        <button class="btn btn-default" data-ng-click="vm.getAll()">Show All</button>
+            <input type="radio" id="sType1" name="searchType" value="FullName"> Full Name
+            <input type="radio" id="sType2" name="searchType" value="FirstName"> First Name
+            <input type="radio" id="sType3" name="searchType" value="LastName"> Last name
+        <input type="text" th:tyid="sType1"pe="text" id="searchValue" name="searchValue">
+        <button class="btn btn-default" data-ng-click="vm.getByName(sType1,sType2,sType3,searchValue)">Search</button>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Acc No.</th>
+                        <th>First Name</th>
+                        <th>Second Name</th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="x in vm.users">
+                    <td>{{x.accountNumber}}</td>
+                    <td>{{x.firstName}}</td>
+                    <td>{{x.lastName}}</td>
+                    <td>
+                        <button class="btn btn-danger" data-ng-click="vm.deleteUser(x.accountNumber)">Delete</button>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
 
 
 </div>
